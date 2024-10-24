@@ -23,6 +23,8 @@ app.get("/news", (req, res) => {
   res.render("news", { title: "Handlebars" });
 });
 
+app.use(express.static(path.join(__dirname, "public")));
+
 app.listen(port, () => {
   console.log("listen tor port: " + port);
 });
