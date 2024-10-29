@@ -23,6 +23,11 @@ app.get("/news", (req, res) => {
   res.render("news", { title: "Handlebars" });
 });
 
+app.get("/search", (req, res) => {
+  res.render("search");
+  console.log(req.query);
+});
+
 app.use(express.static(path.join(__dirname, "public")));
 
 app.listen(port, () => {
