@@ -15,17 +15,26 @@ app.engine(
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "./resourse/views"));
 
+app.use(express.urlencoded({ extended: true })); //handle data from html/form
+app.use(express.json()); //handle data from javascript code
+
 app.get("/", (req, res) => {
   res.render("home", { title: "Home Page" });
 });
 
 app.get("/news", (req, res) => {
   res.render("news", { title: "Handlebars" });
+  // console.log("news params:", req.query);
 });
 
 app.get("/search", (req, res) => {
   res.render("search");
-  console.log(req.query);
+  // console.log(req.query);
+});
+
+app.post("/search", (req, res) => {
+  res.render("search");
+  console.log(req.body);
 });
 
 app.use(express.static(path.join(__dirname, "public")));
