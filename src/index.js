@@ -6,7 +6,8 @@ const handlebars = require("express-handlebars");
 const app = express();
 const port = 3000;
 const routes = require("./routes");
-
+const db = require("./config/db");
+db.connect();
 app.engine(
   "hbs",
   handlebars.engine({

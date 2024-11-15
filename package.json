@@ -7,8 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon --inspect ./src/index.js",
     "sass": "sass --watch ./src/resourse/sass/app.scss ./src/public/css/app.css",
-    "beautiful": "lint-staged",
-    "prepare": "husky"
+    "beautiful": "lint-staged"
   },
   "lint-staged": {
     "src/**/*.{js, json, scss}": "prettier --write --single-quote --trailing-comma all --tab-width 3"
@@ -25,10 +24,10 @@
   "homepage": "https://github.com/maint2802/nodejs_blog24#readme",
   "dependencies": {
     "express": "^4.21.1",
-    "express-handlebars": "^8.0.1"
+    "express-handlebars": "^8.0.1",
+    "mongoose": "^8.8.1"
   },
   "devDependencies": {
-    "husky": "^9.1.6",
     "lint-staged": "^15.2.10",
     "morgan": "^1.10.0",
     "nodemon": "^3.1.7",
