@@ -1,14 +1,13 @@
 const Course = require("../../models/Course");
+const { convertDocToObject } = require("../../utils/mongoose");
 class SideController {
-  index(req, res) {
+  index(req, res, next) {
     Course.find()
-      .then((data) => {
-        res.status(200).json(data);
+      .then((courses) => {
+        res.render("home", { courses: convertDocToObject(courses) });
       })
-      .catch((err) => {
-        res.status(404).json({ message: "error" });
-      });
-    //  res.render("home");
+      .catch(next);
+    // .catch((err) => next(err));
   }
   search(req, res) {
     res.render("search");

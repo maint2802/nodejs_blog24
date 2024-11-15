@@ -1,5 +1,5 @@
 // @import url(_varibles.scss);
-@import 'variables';
+@use 'variables' as *;
 
 h1{
     color: red;
@@ -10,10 +10,16 @@ div{
 }
 
 .container{
-    width: 200px;
+    // width: 200px;
 }
 
 .class{
     background-color: aliceblue;
     font-size: 20px;
 }
+
+.image {
+    width: 100%;      /* Fixed width */
+    height: 200px;     /* Fixed height */
+    object-fit: cover; /* Ensures images fill the box without distorting */
+  }

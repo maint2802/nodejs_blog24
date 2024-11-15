@@ -15,7 +15,7 @@ app.engine(
   })
 );
 app.set("view engine", "hbs");
-app.set("views", path.join(__dirname, "./resourse/views"));
+app.set("views", path.join(__dirname, "resourse", "views"));
 
 app.use(express.urlencoded({ extended: true })); //handle data from html/form
 app.use(express.json()); //handle data from javascript code
