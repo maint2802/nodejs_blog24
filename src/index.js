@@ -7,13 +7,19 @@ const app = express();
 const port = 3000;
 const routes = require("./routes");
 const db = require("./config/db");
+const methodOverride = require("method-override");
 db.connect();
 app.engine(
   "hbs",
   handlebars.engine({
     extname: "hbs",
+    helpers: {
+      add: (a, b) => a + b,
+    },
   })
 );
+app.use(methodOverride("_method"));
+
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "resourse", "views"));
 
@@ -29,10 +35,3 @@ app.listen(port, () => {
 });
 
 // app.use(morgan("combined"));
-const obj = {
-  name: 20,
-  age: 30,
-  gender: "female",
-};
-
-// add comment to test husky

@@ -25,7 +25,9 @@
   "dependencies": {
     "express": "^4.21.1",
     "express-handlebars": "^8.0.1",
-    "mongoose": "^8.8.1"
+    "method-override": "^3.0.0",
+    "mongoose": "^8.8.1",
+    "mongoose-slug-generator": "^1.0.4"
   },
   "devDependencies": {
     "lint-staged": "^15.2.10",

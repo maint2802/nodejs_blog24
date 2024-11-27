@@ -1,0 +1,26 @@
+<h2>My Courses</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Level</th>
+      <th scope="col">Duration</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each courses}}
+    <tr>
+      <th scope="row">{{add @index 1}}</th>
+      <td>{{this.name}}</td>
+      <td>{{this.level}}</td>
+      <td>{{this.createdAt}}</td>
+      <td>
+        <a href='/courses/{{this._id}}/edit' class="btn btn-link">Edit</a>
+        <a href="">Delete</a>
+        </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
