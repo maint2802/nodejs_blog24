@@ -26,12 +26,11 @@ class CoursesController {
 
   // [GET] /courses/store
   createCourse(req, res, next) {
-    const formData = req.body;
-    formData.image = `https://img.youtube.com/vi/${req.body.videoId}/maxresdefault.jpg`;
-    formData.slug = req.body.slug + Date.now();
-    const course = new Course(formData);
+    req.body.image = `https://img.youtube.com/vi/${req.body.videoId}/maxresdefault.jpg`;
+    req.body.slug = req.body.slug + Date.now();
+    const course = new Course(req.body);
     course.save().then(() => {
-      res.redirect("/courses");
+      res.redirect("/me/stored/courses");
     });
   }
   // [GET] /courses/:id/edit
@@ -54,13 +53,41 @@ class CoursesController {
   }
   // [DELETE] /courses/:id
   delete(req, res, next) {
-    console.log("delete controller");
-    console.log(req.params.id);
+    Course.delete({ _id: req.params.id })
+      .then(() => {
+        res.redirect("back");
+      })
+      .catch(next);
+  }
+
+  //[PATCH] /courses/:id/restore
+  restored(req, res, next) {
+    Course.restore({ _id: req.params.id })
+      .then(() => {
+        res.redirect("back");
+      })
+      .catch(next);
+  }
+  //[DELETE] /courses/:id/force-delete
+  forceDelete(req, res, next) {
     Course.deleteOne({ _id: req.params.id })
       .then(() => {
         res.redirect("back");
       })
       .catch(next);
+  }
+
+  //[POST] /courses/form-action
+  formAction(req, res, next) {
+    switch (req.body.action) {
+      case "delete":
+        Course.delete({ _id: { $in: req.body.courseIds } }).then(() => {
+          res.redirect("back");
+        });
+        break;
+      default:
+        console.log("no action match");
+    }
   }
 }
 

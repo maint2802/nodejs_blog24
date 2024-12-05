@@ -1,53 +1,124 @@
 <h2>My Courses</h2>
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Name</th>
-      <th scope="col">Level</th>
-      <th scope="col">Duration</th>
-      <th scope="col"></th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each courses}}
-    <tr>
-      <th scope="row">{{add @index 1}}</th>
-      <td>{{this.name}}</td>
-      <td>{{this.level}}</td>
-      <td>{{this.createdAt}}</td>
-      <td>
-        <a href='/courses/{{this._id}}/edit' class="btn btn-link">Edit</a>
-        <a class="btn btn-link delete-btn"  data-toggle="modal" data-target="#del-course" data-id={{this._id}}>Delete</a>
-        </td>
-    </tr>
-    {{/each}}
-    <div class="modal" role="dialog" id="del-course">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Delete Course</h5>
-          </div>
-          <div class="modal-body">
-            <p>Do you want to delete this course</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-danger del-confirm" >Delete</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div>
+{{!-- {{#if countDel}} --}}
+<a href="/me/trash/courses">Go to trash ({{countDel}})</a>
+{{!-- {{/if}} --}}
+<p></p>
+<form action="/courses/form-action" method="POST">
+    <div class="d-flex align-items-center gap-1">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="" id="checkbox-all" class="checkbox-all">
+      <label class="form-check-label" for="checkbox-all">
+        Choose all
+      </label>
+    </div>
+    <select class="form-select form-select-sm w-25" aria-label="Default select example" name="action" required> 
+      <option value="">--Action--</option>
+      <option value="delete">Delete</option>
+    </select>
+    <button class="btn btn-success btn-sm disabled exc-btn">Implement</button>
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col" colspan="2">#</th>
+        <th scope="col">Name {{{sortable "name" _sort}}}</th>
+        <th scope="col">Level {{{sortable "level" _sort}}}</th>
+        <th scope="col">Video ID {{{sortable "videoId" _sort}}}</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each courses}}
+      <tr>
+        <th>
+            <input class="form-check-input" type="checkbox" id="flexCheckDefault" name="courseIds" value="{{this._id}}">
+        </th>
+        <th scope="row"> 
+          {{add @index 1}}
+        </th>
+        <td>{{this.name}}</td>
+        <td>{{this.level}}</td>
+        <td>{{this.videoId}}</td>
+        <td>
+          <a href='/courses/{{this._id}}/edit' class="btn btn-link">Edit</a>
+          <a class="btn btn-link delete-btn"  data-toggle="modal" data-target="#del-course" data-id={{this._id}}>Delete</a>
+          </td>
+      </tr>
+      {{else}}
+      <tr>
+        <td colspan="5" class="text-center">Don't have any course yet. <a href="/courses/create">Create a new course</a></td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</form>
+ <div class="modal" role="dialog" id="del-course">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Delete Course</h5>
+        </div>
+        <div class="modal-body">
+          <p>Do you want to delete this course</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger del-confirm" >Delete</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
-    <form name="del-form" method="POST"></form>
-    <script>
-      document.querySelector('.del-confirm').addEventListener('click', function(){
-        const courseId = document.querySelector('.delete-btn').getAttribute("data-id")
+  </div>
+  <form name="del-form" method="POST"></form>
+
+
+  <script>
+      //jquery import from bootstrap in main.hbs file 
+      document.addEventListener('DOMContentLoaded', function() {
         const delForm = document.forms['del-form']
-        delForm.action = `/courses/${courseId}?_method=DELETE`
-        delForm.submit()
-      })
+        const delConfirmBtn  =$('.del-confirm')
+        let courseId 
+       $('#del-course').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+           courseId = button.data('id') // Extract info from data-* attributes
+          })  
+
+        delConfirmBtn.on('click', function(){
+            delForm.action = `/courses/${courseId}?_method=DELETE`
+            delForm.submit()
+         })  
+        //handle checkbox
+        const checkboxAll = $('#checkbox-all')
+        const checkboxCourseList = $("[name='courseIds']")
+        const excBtn = $('.exc-btn')
+        let isCheckedAll 
+        let checkedLength
+
+        checkboxAll.change(function(){
+          isCheckedAll = $(this).prop('checked')
+          checkboxCourseList.prop('checked', isCheckedAll)
+          renderExcBtn()
+        })
+
+        checkboxCourseList.change(function(){
+          checkedLength = $("[name='courseIds']:checked").length 
+          checkboxAll.prop('checked',checkedLength == checkboxCourseList.length )
+          renderExcBtn()
+        })
+
+        const renderExcBtn = ()=>{
+            if(checkedLength || isCheckedAll){
+              excBtn.removeClass('disabled')
+            }else{
+              excBtn.addClass('disabled')
+            }
+        
+        }
+
+        excBtn.click(function(e){
+          //e.preventDefault()
+        })
+
+      
+       });
+
     </script>
-  </tbody>
-</table>
-
-
