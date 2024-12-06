@@ -4,7 +4,7 @@ class MeController {
   //[GET] /stored/courses
   storedCourses(req, res, next) {
     const courses = Course.find();
-    console.log(req.query);
+
     if (req.query.hasOwnProperty("_sort")) {
       courses.sort({ [req.query.column]: req.query.type });
     }
