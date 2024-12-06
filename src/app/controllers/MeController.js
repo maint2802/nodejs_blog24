@@ -7,6 +7,7 @@ class MeController {
       Course.find().sortable(req, res),
       Course.countDocumentsWithDeleted({ deleted: true }),
     ])
+
       .then(([courses, countDel]) => {
         res.render("me/stored-courses", {
           courses: convertDocToObject(courses),
