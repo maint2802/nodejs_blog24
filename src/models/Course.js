@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const slug = require("mongoose-slug-generator");
 const mongoose_del = require("mongoose-delete");
-const Course = new mongoose.Schema(
+const CourseSchema = new mongoose.Schema(
   {
     name: { type: String, require: true },
     description: { type: String },
@@ -15,6 +15,16 @@ const Course = new mongoose.Schema(
 );
 
 mongoose.plugin(slug);
-Course.plugin(mongoose_del, { deletedAt: true, overrideMethods: "all" });
+CourseSchema.plugin(mongoose_del, { deletedAt: true, overrideMethods: "all" });
 
-module.exports = mongoose.model("Course", Course);
+// custom query helpers
+CourseSchema.query.sortable = function (req, res) {
+  if (req.query.hasOwnProperty("_sort")) {
+    return this.sort({
+      [req.query.column]: res.locals._sort.type,
+    });
+  }
+  return this;
+};
+
+module.exports = mongoose.model("Course", CourseSchema);
