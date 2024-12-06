@@ -7,7 +7,7 @@ const port = 3000;
 const routes = require("./routes");
 const db = require("./config/db");
 const methodOverride = require("method-override");
-const SortMiddleware = require("./app/middleware/SortMiddleware");
+const sortMiddleware = require("./app/middleware/sortMiddleware");
 db.connect();
 app.engine(
   "hbs",
@@ -28,7 +28,12 @@ app.engine(
           desc: "asc",
         };
 
-        const sortType = column === _sort.column ? _sort.type : "default";
+        console.log(_sort);
+
+        let sortType = ["desc", "asc"].includes(_sort.type)
+          ? _sort.type
+          : "desc";
+        sortType = column === _sort.column ? _sort.type : "default";
 
         return `<a href="?_sort&column=${column}&type=${types[_sort.type]}">${icons[sortType]}</a>`;
       },
@@ -44,7 +49,7 @@ app.use(express.urlencoded({ extended: true })); //handle data from html/form
 app.use(express.json()); //handle data from javascript code
 
 // Custom middleware
-app.use(SortMiddleware);
+app.use(sortMiddleware);
 
 routes(app);
 
