@@ -5,12 +5,6 @@
 <p></p>
 <form action="/courses/form-action" method="POST">
     <div class="d-flex align-items-center gap-1">
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" value="" id="checkbox-all" class="checkbox-all">
-      <label class="form-check-label" for="checkbox-all">
-        Choose all
-      </label>
-    </div>
     <select class="form-select form-select-sm w-25" aria-label="Default select example" name="action" required> 
       <option value="">--Action--</option>
       <option value="delete">Delete</option>
@@ -20,7 +14,10 @@
   <table class="table">
     <thead>
       <tr>
-        <th scope="col" colspan="2">#</th>
+        <th scope="col">
+           <input class="form-check-input" type="checkbox" value="" id="checkbox-all" class="checkbox-all">
+        </th>
+        <th scope="col" >Id {{{sortable "_id" _sort}}}</th>
         <th scope="col">Name {{{sortable "name" _sort}}}</th>
         <th scope="col">Level {{{sortable "level" _sort}}}</th>
         <th scope="col">Video ID {{{sortable "videoId" _sort}}}</th>
@@ -34,7 +31,8 @@
             <input class="form-check-input" type="checkbox" id="flexCheckDefault" name="courseIds" value="{{this._id}}">
         </th>
         <th scope="row"> 
-          {{add @index 1}}
+          {{!-- {{add @index 1}} --}}
+          {{this._id}}
         </th>
         <td>{{this.name}}</td>
         <td>{{this.level}}</td>

@@ -29,9 +29,12 @@ class CoursesController {
     req.body.image = `https://img.youtube.com/vi/${req.body.videoId}/maxresdefault.jpg`;
     req.body.slug = req.body.slug + Date.now();
     const course = new Course(req.body);
-    course.save().then(() => {
-      res.redirect("/me/stored/courses");
-    });
+    course
+      .save()
+      .then(() => {
+        res.redirect("/me/stored/courses");
+      })
+      .catch(next);
   }
   // [GET] /courses/:id/edit
   renderEdit(req, res, next) {
